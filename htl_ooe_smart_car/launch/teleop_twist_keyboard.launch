@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find htl_ooe_smart_car)/launch/htl_ooe_smart_car.launch"/>
+    <remap from="/cmd_vel" to="/pwm/servos_drive"/>
+    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop" output="screen"/>
+</launch>

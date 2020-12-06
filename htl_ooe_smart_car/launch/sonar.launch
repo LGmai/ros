@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="htl_ooe_smart_car" name="sonar" type="sonar" output="screen"/>
+</launch>

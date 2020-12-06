@@ -1,0 +1,44 @@
+<launch>
+    <rosparam file="$(find htl_ooe_smart_car)/config/parameter.yaml"/>
+    <include file="$(find htl_ooe_smart_car)/launch/sonar.launch"/>
+    <include file="$(find htl_ooe_smart_car)/launch/pwm.launch"/>
+    <include file="$(find htl_ooe_smart_car)/launch/ir.launch"/>
+# we rely on a pwm_frequency of 50Hz -> 20000000ns per period
+    <node pkg="rosservice" type="rosservice" name="configure_drive_pwms"
+    args="call --wait /pwm/config_servos
+    'servos: [{servo: 0, center: 10000000, range: 20000000, direction: 1},
+              {servo: 1, center: 10000000, range: 20000000, direction: -1},
+              {servo: 2, center: 10000000, range: 20000000, direction: 1},
+              {servo: 3, center: 10000000, range: 20000000, direction: -1},
+              {servo: 4, center: 10000000, range: 20000000, direction: -1},
+              {servo: 5, center: 10000000, range: 20000000, direction: 1},
+              {servo: 6, center: 10000000, range: 20000000, direction: -1},
+              {servo: 7, center: 10000000, range: 20000000, direction: 1}]'"/>
+    <node pkg="rosservice" type="rosservice" name="configure_servos"
+    args="call --wait /pwm/config_servos
+    'servos: [{servo: 12, center: 1500000, range: 1000000, direction: 1},
+              {servo: 13, center: 1500000, range: 1000000, direction: -1},
+              {servo: 14, center: 1500000, range: 1000000, direction: 1},
+              {servo: 15, center: 1500000, range: 1000000, direction: 1}]'"/>
+
+# differential has eight positons
+# 1 = POSITION_LEFTFRONT_PHASE_A
+# 2 = POSITION_LEFTFRONT_PHASE_B
+# 3 = POSITION_RIGHTFRONT_PHASE_A
+# 4 = POSITION_RIGHTFRONT_PHASE_B
+# 5 = POSITION_LEFTREAR_PHASE_A
+# 6 = POSITION_LEFTREAR_PHASE_B
+# 7 = POSITION_RIGHTREAR_PHASE_A
+# 8 = POSITION_RIGHTREAR_PHASE_B
+    <node pkg="rosservice" type="rosservice" name="configure_drive_mode"
+    args="call --wait /pwm/config_drive_mode
+    '{mode: differential, rpm: 56.0, radius: 0.0055, track: 0.015, scale: 1.0,
+    servos: [{servo: 0, position: 3},
+             {servo: 1, position: 4},
+             {servo: 2, position: 7},
+             {servo: 3, position: 8},
+             {servo: 4, position: 1},
+             {servo: 5, position: 2},
+             {servo: 6, position: 5},
+             {servo: 7, position: 6}]}'"/>
+</launch>

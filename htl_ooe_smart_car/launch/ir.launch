@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="htl_ooe_smart_car" name="ir" type="ir.py" ns="ir" output="screen"/>
+</launch>
